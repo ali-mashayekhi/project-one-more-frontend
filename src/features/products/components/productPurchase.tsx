@@ -18,9 +18,7 @@ export default function ProductPurchase({ product }: ProductPurchaseProps) {
       />
       <div className="flex justify-end py-4 px-5">
         <p className="text-lg font-medium">
-          <span className="text-sm text-muted-foreground font-normal">
-            تومان
-          </span>{" "}
+          <span className="text-sm text-muted-foreground font-normal"></span>{" "}
           {formatMoney(2550000)}
         </p>
       </div>
