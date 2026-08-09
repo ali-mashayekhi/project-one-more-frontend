@@ -1,6 +1,6 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+import { endpoints } from "./endpoints";
 
-const REFRESH_ENDPOINT = "/users/token/refresh/";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 interface ApiOptions extends RequestInit {
   auth?: boolean;
@@ -17,15 +17,11 @@ interface RefreshResponse {
 }
 
 function getStoredUser(): StoredUser | null {
-  if (typeof window === "undefined") {
-    return null;
-  }
+  if (typeof window === "undefined") return null;
 
   const storedUser = localStorage.getItem("user");
 
-  if (!storedUser) {
-    return null;
-  }
+  if (!storedUser) return null;
 
   try {
     return JSON.parse(storedUser) as StoredUser;
@@ -47,25 +43,25 @@ function setStoredTokens(currentUser: StoredUser, tokens: RefreshResponse) {
 }
 
 async function refreshAccessToken(): Promise<string> {
-  if (typeof window === "undefined") {
+  if (typeof window === "undefined")
     throw new Error("Token refresh is only available on the client");
-  }
 
   const user = getStoredUser();
 
-  if (!user?.refresh) {
-    throw new Error("No refresh token available");
-  }
+  if (!user?.refresh) throw new Error("No refresh token available");
 
-  const response = await fetch(`${BASE_URL}${REFRESH_ENDPOINT}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+  const response = await fetch(
+    `${BASE_URL}${endpoints.users.auth.token.refresh}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        refresh: user.refresh,
+      }),
     },
-    body: JSON.stringify({
-      refresh: user.refresh,
-    }),
-  });
+  );
 
   if (!response.ok) {
     localStorage.removeItem("user");
@@ -99,9 +95,8 @@ export async function api<T>(
 
   let accessToken: string | undefined;
 
-  if (auth && typeof window !== "undefined") {
+  if (auth && typeof window !== "undefined")
     accessToken = getStoredUser()?.access;
-  }
 
   const response = await fetch(`${BASE_URL}${endpoint}`, {
     ...fetchOptions,
