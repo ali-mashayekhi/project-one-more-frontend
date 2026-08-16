@@ -3,12 +3,13 @@
 import Image from "next/image";
 import "swiper/css";
 import "swiper/css/pagination";
-import "./swiperPaginationStyles.css";
 import { A11y, Keyboard, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { StyleImage } from "../../types/product-detail";
+import "./swiperPaginationStyles.css";
 
 interface ProductGalleryProps {
-  images: string[];
+  images: StyleImage[];
 }
 
 export default function ProductGallery({ images }: ProductGalleryProps) {
@@ -22,13 +23,20 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
         spaceBetween={0}
         slidesPerView={1}
       >
-        {images.map((image) => (
-          <SwiperSlide key={image}>
-            <div className="relative aspect-[0.75] w-full">
-              <Image src={image} alt="" fill className="object-cover" />
-            </div>
-          </SwiperSlide>
-        ))}
+        {images.map((image) => {
+          return (
+            <SwiperSlide key={image.id}>
+              <div className="relative aspect-[0.75] w-full">
+                <Image
+                  src={image.image}
+                  alt={image.alt}
+                  fill
+                  className="object-cover object-center"
+                />
+              </div>
+            </SwiperSlide>
+          );
+        })}
         <div className="product-gallery-pagination mt-8 flex justify-center" />
       </Swiper>
     </section>

@@ -1,13 +1,9 @@
 import { api } from "@/lib/api";
 import { endpoints } from "@/lib/endpoints";
+import { ProductDetail } from "../types/product-detail";
 
-interface ProductDetail {
-  id: number;
-  name: string;
-}
-
-export async function getProductDetail(id: string) {
-  return api<ProductDetail>(`${endpoints.products.productDetail}${id}/`, {
+export async function getProductDetail(slug: string): Promise<ProductDetail> {
+  return api<ProductDetail>(`${endpoints.products.productDetail}${slug}/`, {
     method: "GET",
   });
 }

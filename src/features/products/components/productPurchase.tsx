@@ -1,76 +1,83 @@
-import { Button } from "@/components/ui/button";
-import { formatMoney } from "@/lib/utils";
-import { ProductDetail } from "../types/product-detail";
+"use client";
+
+import { useState } from "react";
+import {
+  ProductDetail,
+  ProductSize,
+  StyleColor,
+} from "../types/product-detail";
+import AddToCartButton from "./addToCartButton";
 import ProductGallery from "./gallery/productGallery";
+import ProductPrice from "./productPrice";
+import ProductVariantSelector from "./productVariantSelector";
+
+function isSameColorCombination(
+  first: StyleColor[],
+  second: StyleColor[],
+): boolean {
+  if (first.length !== second.length) {
+    return false;
+  }
+
+  const firstIds = first.map((color) => color.id).sort();
+  const secondIds = second.map((color) => color.id).sort();
+
+  return firstIds.every((id, index) => id === secondIds[index]);
+}
 
 interface ProductPurchaseProps {
   product: ProductDetail;
 }
 
 export default function ProductPurchase({ product }: ProductPurchaseProps) {
+  const [selectedColor, setSelectedColor] = useState(product.styles[0].colors);
+  const [selectedSize, setSelectedSize] = useState<ProductSize | null>(null);
+  const [selectedPack, setSelectedPack] = useState(product.styles[0].pack);
+  const [selectedStyle, setSelectedStyle] = useState(product.styles[0]);
+
+  // TODO: Change the name here to selected style and the upper selected style in state to ImageStyle after refactore
+  const selectedStyleForVariant =
+    product.styles.find(
+      (style) =>
+        style.pack.id === selectedPack.id &&
+        isSameColorCombination(style.colors, selectedColor),
+    ) ?? null;
+
+  const selectedVariant =
+    selectedStyleForVariant && selectedSize
+      ? (product.variants.find(
+          (variant) =>
+            variant.style === selectedStyleForVariant.id &&
+            variant.size_ids.includes(selectedSize.id) &&
+            variant.stock > 0,
+        ) ?? null)
+      : null;
+
   return (
     <>
-      <ProductGallery
-        images={[
-          "/8bd6712f8736fa4087450dcb8aed9c6c.jpg",
-          "/98b33f3ef90921a88c15b720990a792c.jpg",
-        ]}
+      <ProductGallery images={selectedStyle.images} />
+      <ProductPrice
+        price={
+          selectedVariant ? selectedVariant.price : product.variants[0].price
+        }
       />
-      <div className="flex justify-end py-4 px-5">
-        <p className="text-lg font-medium">
-          <span className="text-sm text-muted-foreground font-normal"></span>{" "}
-          {formatMoney(2550000)}
-        </p>
-      </div>
-      <div className="mb-8 px-5">
-        <div className="flex flex-col gap-3 py-3 ">
-          <p className="font-medium text-sm text-muted-foreground">رنگ</p>
-          <div className="flex gap-4">
-            <div className="h-9 w-9 rounded-full bg-red-500"></div>
-            <div className="h-9 w-9 rounded-full bg-red-500"></div>
-            <div className="h-9 w-9 rounded-full bg-red-500"></div>
-            <div className="h-9 w-9 rounded-full bg-red-500"></div>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-3 py-3 ">
-          <div className="flex justify-between items-center">
-            <p className="font-medium text-sm text-muted-foreground">سایز</p>
-            <p className="text-xs text-muted-foreground">راهنمای سایز</p>
-          </div>
-          <div className="flex gap-4 flex-wrap">
-            <div className="w-14 h-10 flex items-center justify-center border border-border rounded-md text-xs">
-              S
-            </div>
-            <div className="w-14 h-10 flex items-center justify-center border border-border rounded-md text-xs">
-              M
-            </div>
-            <div className="w-14 h-10 flex items-center justify-center border border-border rounded-md text-xs">
-              L
-            </div>
-            <div className="w-14 h-10 flex items-center justify-center border border-border rounded-md text-xs">
-              XL
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-3 py-3 ">
-          <p className="font-medium text-sm text-muted-foreground">بسته</p>
-          <div className="flex gap-4">
-            <div className="h-10 w-16 rounded-md flex items-center justify-center border border-border text-xs">
-              تکی
-            </div>
-            <div className="h-10 w-16 rounded-md flex items-center justify-center border border-border text-xs">
-              سه تایی
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="px-5">
-        <Button className="w-full mb-10" size="lg">
-          افزودن به سبد خرید
-        </Button>
-      </div>
+      <ProductVariantSelector
+        product={product}
+        selectedColor={selectedColor}
+        setSelectedColor={setSelectedColor}
+        selectedSize={selectedSize}
+        setSelectedSize={setSelectedSize}
+        selectedPack={selectedPack}
+        setSelectedPack={setSelectedPack}
+        setSelectedStyle={setSelectedStyle}
+      />
+      <AddToCartButton
+        selectedVariant={selectedVariant}
+        selectedColor={selectedColor}
+        selectedSize={selectedSize}
+        selectedPack={selectedPack}
+        variantImage={selectedStyle.images[0]}
+      />
     </>
   );
 }

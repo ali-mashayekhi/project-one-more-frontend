@@ -1,4 +1,4 @@
-export default function Header() {
+export default function StorefrontHeader() {
   return (
     <div className="flex items-center justify-between px-5 h-12 border-b border-border">
       <div>Profile</div>

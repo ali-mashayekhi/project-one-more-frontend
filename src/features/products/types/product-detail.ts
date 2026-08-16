@@ -10,12 +10,12 @@ export interface ProductDetail {
   size_guide_description: string;
   size_guide_image?: string;
 
-  sizes: ProductSizes[];
+  sizes: ProductSize[];
   styles: ProductStyle[];
-  variants: string;
+  variants: ProductVariant[];
 }
 
-export interface ProductSizes {
+export interface ProductSize {
   id: number;
   info_description: string;
   info_title: string;
