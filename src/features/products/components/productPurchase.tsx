@@ -77,6 +77,7 @@ export default function ProductPurchase({ product }: ProductPurchaseProps) {
         selectedSize={selectedSize}
         selectedPack={selectedPack}
         variantImage={selectedStyle.images[0]}
+        productId={product.id}
       />
     </>
   );

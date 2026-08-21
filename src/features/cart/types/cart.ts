@@ -7,6 +7,7 @@ import {
 
 export interface CartItem {
   variantId: number;
+  productId: number;
   sku: string;
 
   style: {

@@ -17,6 +17,7 @@ interface AddToBasketButtonProps {
   selectedColor: StyleColor[];
   selectedPack: StylePack;
   variantImage: StyleImage;
+  productId: number;
 }
 
 export default function AddToCartButton({
@@ -25,6 +26,7 @@ export default function AddToCartButton({
   selectedColor,
   selectedPack,
   variantImage,
+  productId,
 }: AddToBasketButtonProps) {
   const addToCart = () => {
     if (!selectedVariant || !selectedSize) return;
@@ -42,6 +44,7 @@ export default function AddToCartButton({
     } else {
       const cartItem: CartItem = {
         variantId: selectedVariant.id,
+        productId: productId,
         sku: selectedVariant.sku,
 
         style: {
