@@ -1,3 +1,5 @@
+import CartPage from "@/features/cart/components/cartPage";
+
 export default async function Page() {
-  return <div>hi</div>;
+  return <CartPage />;
 }

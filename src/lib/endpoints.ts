@@ -7,4 +7,7 @@ export const endpoints = {
     },
   },
   products: { productDetail: "products/product-detail/" },
+  checkout: {
+    sessions: "checkout/sessions/",
+  },
 };

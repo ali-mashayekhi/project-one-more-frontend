@@ -2,6 +2,16 @@ import { endpoints } from "./endpoints";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
+export class ApiError extends Error {
+  status: number;
+
+  constructor(status: number, message = "API request failed") {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+  }
+}
+
 interface ApiOptions extends RequestInit {
   auth?: boolean;
 }
@@ -65,7 +75,7 @@ async function refreshAccessToken(): Promise<string> {
 
   if (!response.ok) {
     localStorage.removeItem("user");
-    throw new Error("Token refresh failed");
+    throw new ApiError(response.status, "Token refresh failed");
   }
 
   const tokens = (await response.json()) as RefreshResponse;
@@ -106,7 +116,7 @@ export async function api<T>(
   // Normal response
   if (response.status !== 401 || !auth) {
     if (!response.ok) {
-      throw new Error(`API request failed: ${response.status}`);
+      throw new ApiError(response.status);
     }
 
     return response.json();
@@ -122,7 +132,7 @@ export async function api<T>(
   });
 
   if (!retryResponse.ok) {
-    throw new Error(`API request failed: ${retryResponse.status}`);
+    throw new ApiError(retryResponse.status);
   }
 
   return retryResponse.json();

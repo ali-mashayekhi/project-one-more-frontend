@@ -8,8 +8,10 @@ import {
 export interface CartItem {
   variantId: number;
   productId: number;
+  productSlug: string;
   sku: string;
-
+  productName: string;
+  productSubtitle: string;
   style: {
     colors: StyleColor[];
     image: StyleImage;

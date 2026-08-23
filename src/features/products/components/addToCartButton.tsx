@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
+  ProductDetail,
   ProductSize,
   ProductVariant,
   StyleColor,
@@ -17,7 +18,7 @@ interface AddToBasketButtonProps {
   selectedColor: StyleColor[];
   selectedPack: StylePack;
   variantImage: StyleImage;
-  productId: number;
+  product: ProductDetail;
 }
 
 export default function AddToCartButton({
@@ -26,7 +27,7 @@ export default function AddToCartButton({
   selectedColor,
   selectedPack,
   variantImage,
-  productId,
+  product,
 }: AddToBasketButtonProps) {
   const addToCart = () => {
     if (!selectedVariant || !selectedSize) return;
@@ -44,7 +45,10 @@ export default function AddToCartButton({
     } else {
       const cartItem: CartItem = {
         variantId: selectedVariant.id,
-        productId: productId,
+        productId: product.id,
+        productName: product.name,
+        productSubtitle: product.subtitle,
+        productSlug: product.slug,
         sku: selectedVariant.sku,
 
         style: {

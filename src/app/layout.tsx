@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { vazirmatn } from "./fonts";
 import "./globals.css";
+import Providers from "./providers";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,7 +19,9 @@ export default function RootLayout({
       className={`${vazirmatn.variable} h-full antialiased text-foreground bg-background`}
       dir="rtl"
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
