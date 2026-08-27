@@ -1,13 +1,9 @@
 import { api } from "@/lib/api";
 import { endpoints } from "@/lib/endpoints";
-import { CreateCheckoutSessionResponse } from "../types/checkout";
-
-interface CreateCheckoutSessionPayload {
-  items: {
-    variant_id: number;
-    quantity: number;
-  }[];
-}
+import {
+  CreateCheckoutSessionPayload,
+  CreateCheckoutSessionResponse,
+} from "../types/checkout";
 
 export async function createCheckoutSession(
   payload: CreateCheckoutSessionPayload,

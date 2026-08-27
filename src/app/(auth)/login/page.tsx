@@ -1,3 +1,5 @@
+import LoginPage from "@/features/auth/components/loginPage";
+
 export default async function Page() {
-  return <div>hi Im login page</div>;
+  return <LoginPage />;
 }

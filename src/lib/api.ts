@@ -1,16 +1,7 @@
+import { ApiError } from "./api-error";
 import { endpoints } from "./endpoints";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-
-export class ApiError extends Error {
-  status: number;
-
-  constructor(status: number, message = "API request failed") {
-    super(message);
-    this.name = "ApiError";
-    this.status = status;
-  }
-}
 
 interface ApiOptions extends RequestInit {
   auth?: boolean;
@@ -58,7 +49,7 @@ async function refreshAccessToken(): Promise<string> {
 
   const user = getStoredUser();
 
-  if (!user?.refresh) throw new Error("No refresh token available");
+  if (!user?.refresh) throw new ApiError(401, "Authentication required");
 
   const response = await fetch(
     `${BASE_URL}${endpoints.users.auth.token.refresh}`,

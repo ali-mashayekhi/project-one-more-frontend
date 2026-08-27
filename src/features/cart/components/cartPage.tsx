@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { createCheckoutSession } from "@/features/checkout/services/create-checkout-session.client";
-import { ApiError } from "@/lib/api";
+import { ApiError } from "@/lib/api-error";
 
 export default function CartPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -24,9 +24,9 @@ export default function CartPage() {
     },
 
     onError: (error) => {
-      if (error instanceof ApiError && error.status === 401) {
+      console.log(error);
+      if (error instanceof ApiError && error.status === 401)
         router.push("/login?next=/cart");
-      }
     },
   });
 

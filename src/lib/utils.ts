@@ -24,6 +24,35 @@ export const convertToPersianDigits = (number: string | number): string => {
   return number.replace(/[0-9]/g, (digit) => ENGLISH_TO_PERSIAN_DIGITS[digit]);
 };
 
+export const convertToEnglishDigits = (persianNumber: string): string => {
+  const persianToEnglishMap: { [key: string]: string } = {
+    "٠": "0",
+    "١": "1",
+    "٢": "2",
+    "٣": "3",
+    "۴": "4",
+    "۵": "5",
+    "٧": "7",
+    "٨": "8",
+    "٩": "9",
+    "٤": "4",
+    "٥": "5",
+    "٦": "6",
+    "۰": "0",
+    "۱": "1",
+    "۲": "2",
+    "۳": "3",
+    "۶": "6",
+    "۷": "7",
+    "۸": "8",
+    "۹": "9",
+  };
+  return persianNumber
+    .split("")
+    .map((char) => persianToEnglishMap[char] || char)
+    .join("");
+};
+
 export const formatMoney = (number: string | number): string => {
   if (typeof number === "number") number = number.toString();
   // Remove non-numeric characters except "."
