@@ -7,21 +7,11 @@ export default async function Page({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-
   const product = await getProductDetail(slug);
-
-  console.log("product", product);
 
   return (
     <>
-      <nav
-        aria-label="Breadcrumb"
-        className="text-muted-foreground text-xs px-5"
-      >
-        breadCrumb
-      </nav>
-
-      <header className="px-5 py-1">
+      <header className="px-5 py-1 mt-2">
         <p className="text-muted-foreground text-xs font-medium">
           برای مصرف روزانه
         </p>

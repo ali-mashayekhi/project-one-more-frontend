@@ -70,3 +70,9 @@ export const formatMoney = (number: string | number): string => {
     ? `${formattedInteger}.${decimalPart}`
     : convertToPersianDigits(formattedInteger);
 };
+
+export function formatPersianDate(date: string): string {
+  return new Date(date).toLocaleDateString("fa-IR-u-ca-persian", {
+    timeZone: "Asia/Tehran",
+  });
+}

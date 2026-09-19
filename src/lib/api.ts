@@ -1,3 +1,5 @@
+import { getStoredAuth } from "@/features/auth/lib/storage";
+import { StoredAuth } from "@/features/auth/types/auth";
 import { ApiError } from "./api-error";
 import { endpoints } from "./endpoints";
 
@@ -7,32 +9,12 @@ interface ApiOptions extends RequestInit {
   auth?: boolean;
 }
 
-interface StoredUser {
-  access: string;
-  refresh: string;
-}
-
 interface RefreshResponse {
   access: string;
   refresh?: string;
 }
 
-function getStoredUser(): StoredUser | null {
-  if (typeof window === "undefined") return null;
-
-  const storedUser = localStorage.getItem("user");
-
-  if (!storedUser) return null;
-
-  try {
-    return JSON.parse(storedUser) as StoredUser;
-  } catch {
-    localStorage.removeItem("user");
-    return null;
-  }
-}
-
-function setStoredTokens(currentUser: StoredUser, tokens: RefreshResponse) {
+function setStoredTokens(currentUser: StoredAuth, tokens: RefreshResponse) {
   localStorage.setItem(
     "user",
     JSON.stringify({
@@ -47,7 +29,7 @@ async function refreshAccessToken(): Promise<string> {
   if (typeof window === "undefined")
     throw new Error("Token refresh is only available on the client");
 
-  const user = getStoredUser();
+  const user = getStoredAuth();
 
   if (!user?.refresh) throw new ApiError(401, "Authentication required");
 
@@ -97,7 +79,7 @@ export async function api<T>(
   let accessToken: string | undefined;
 
   if (auth && typeof window !== "undefined")
-    accessToken = getStoredUser()?.access;
+    accessToken = getStoredAuth()?.access;
 
   const response = await fetch(`${BASE_URL}${endpoint}`, {
     ...fetchOptions,

@@ -20,3 +20,9 @@ export interface VerifyOtpResponse {
   refresh: string;
   access: string;
 }
+
+export interface StoredAuth {
+  access: string;
+  refresh: string;
+  user: User;
+}

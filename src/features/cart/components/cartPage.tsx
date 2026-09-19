@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { createCheckoutSession } from "@/features/checkout/services/create-checkout-session.client";
 import { ApiError } from "@/lib/api-error";
+import { CheckoutSession } from "@/features/checkout/types/checkout";
+import { CHECKOUT_SESSION_STORAGE_KEY } from "@/features/checkout/lib/storage";
 
 export default function CartPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -20,7 +22,17 @@ export default function CartPage() {
     mutationFn: createCheckoutSession,
 
     onSuccess: (data) => {
-      router.push(`/checkout/${data.session_id}`);
+      const checkoutSession: CheckoutSession = {
+        sessionId: data.session_id,
+        items: cart,
+        shipping: null,
+      };
+
+      localStorage.setItem(
+        CHECKOUT_SESSION_STORAGE_KEY,
+        JSON.stringify(checkoutSession),
+      );
+      router.push(`/checkout/shipping/${data.session_id}`);
     },
 
     onError: (error) => {
