@@ -1,5 +1,5 @@
+import StorefrontFooter from "./storefrontFooter";
 import StorefrontHeader from "./storefrontHeader";
-// import Footer from "./footer";
 
 export default function StorefrontLayout({
   children,
@@ -10,7 +10,7 @@ export default function StorefrontLayout({
     <>
       <StorefrontHeader />
       <main>{children}</main>
-      {/* <Footer>Footer</Footer> */}
+      <StorefrontFooter />
     </>
   );
 }

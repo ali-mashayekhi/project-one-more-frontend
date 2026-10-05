@@ -11,7 +11,7 @@ export default function StorefrontHeader() {
       <Link href={"/cart"}>
         <HugeiconsIcon icon={ShoppingBasket01Icon} size={24} />
       </Link>
-      <Link href={"/"}>The LOGO</Link>
+      <Link href={"/"}>ANAHI</Link>
       <Link href={"/profile/personal-info"}>
         <HugeiconsIcon icon={UserCircle02Icon} size={24} />
       </Link>
